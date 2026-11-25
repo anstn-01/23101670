@@ -16,12 +16,12 @@ using UnityEngine;
 public static class ParkingFactoryBuilder
 {
     // ---- 크기 (m) ----
-    const float Width = 22f;        // 좌우 폭 (로컬 X)
-    const float Depth = 26f;        // 앞뒤 길이 (로컬 Z, +Z 가 입구)
+    const float Width = 13f;        // 좌우 폭 (로컬 X)
+    const float Depth = 13f;        // 앞뒤 길이 (로컬 Z, +Z 가 입구)
     const float Height = 7f;        // 벽 높이
     const float Wall = 0.4f;        // 벽 두께
     const float RoofT = 0.35f;      // 지붕 두께
-    const float DoorW = 9f;         // 차량 입구 폭
+    const float DoorW = 6f;         // 차량 입구 폭
     const float DoorH = 4.6f;       // 차량 입구 높이
     const float BaseBand = 1.0f;    // 벽 아래 콘크리트 띠 높이
     const float Cornice = 0.6f;     // 벽 위 몰딩 높이
@@ -49,8 +49,8 @@ public static class ParkingFactoryBuilder
     static readonly Rect Full = R(0f, 0f, 1f, 1f);
 
     // ---- 방 크기 (m) : 공장 안 오른쪽 안쪽 모서리 ----
-    const float RoomW = 6f;         // 방 폭 (공장 로컬 X)
-    const float RoomD = 5f;         // 방 깊이 (공장 로컬 Z)
+    const float RoomW = 5f;         // 방 폭 (공장 로컬 X)
+    const float RoomD = 4.2f;         // 방 깊이 (공장 로컬 Z)
     const float RoomH = 3f;         // 방 벽 높이
     const float RoomT = 0.15f;      // 칸막이 벽 두께
     const float RoomDoorW = 1.0f;   // 방 문 폭

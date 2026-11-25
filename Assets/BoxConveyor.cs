@@ -3,6 +3,7 @@
 // 상자는 3종류(기본 / 낮은 상자 / 긴 상자)가 순서대로 번갈아 나와요.
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class BoxConveyor : MonoBehaviour
 {
@@ -32,7 +33,9 @@ public class BoxConveyor : MonoBehaviour
     class Item
     {
         public Transform t; public Rigidbody rb; public Component grab;
-        public float dist, len; public Vector3 size; public bool detached, released;
+        public float dist, len; public Vector3 size; public bool detached;
+        public bool held;          // 지금 손에 들려 있는지 (놓는 순간을 감지)
+        public int releaseFrames;  // 놓은 뒤 몇 프레임 동안 물리 상태를 강제로 풀어줌
     }
     readonly List<Item> items = new List<Item>();
     public Transform LastBox { get; private set; }
@@ -107,12 +110,17 @@ public class BoxConveyor : MonoBehaviour
             var it = items[i];
             if (it.t == null) { items.RemoveAt(i--); continue; }
 
+            bool selected = IsSelected(it.grab);
             if (!it.detached)
             {
                 // 플레이어가 잡았거나 밀려났으면 경로에서 빠짐
-                bool selected = IsSelected(it.grab);
                 if (selected || (it.t.position - WorldAt(it.dist, it.size)).sqrMagnitude > 0.06f * 0.06f)
-                { it.detached = true; continue; }
+                {
+                    it.detached = true;
+                    it.held = selected;
+                    if (!selected) it.releaseFrames = 6;   // 밀려난 경우 바로 물리로
+                    continue;
+                }
 
                 float limit = Mathf.Min(it.len, ahead == float.MaxValue ? float.MaxValue : ahead - Gap(aheadSize, it.size));
                 float nd = Mathf.MoveTowards(it.dist, Mathf.Max(it.dist, limit), speed * Time.deltaTime);
@@ -122,11 +130,12 @@ public class BoxConveyor : MonoBehaviour
                 it.t.rotation = transform.rotation;
                 ahead = it.dist; aheadSize = it.size;
             }
-            else if (!it.released && !IsSelected(it.grab))
+            else if (selected) it.held = true;
+            else if (it.held)
             {
-                it.released = true;
-                it.rb.isKinematic = false;
-                it.rb.useGravity = true;
+                // 손에서 놓은 순간 (두 번째, 세 번째로 잡았다 놓아도 매번 처리)
+                it.held = false;
+                it.releaseFrames = 6;
             }
         }
 
@@ -141,6 +150,21 @@ public class BoxConveyor : MonoBehaviour
                 if (p.x < ribMin) p.x += span;
                 r.localPosition = p;
             }
+        }
+    }
+
+    void LateUpdate()
+    {
+        // XR 잡기는 놓을 때 "잡기 전 상태(kinematic, 중력 없음)"로 되돌려서 상자가 공중에 고정됨.
+        // 놓은 뒤 몇 프레임 동안 일반 물리 상태로 확실히 바꿔줌.
+        foreach (var it in items)
+        {
+            if (it.t == null || it.rb == null || it.releaseFrames <= 0) continue;
+            it.releaseFrames--;
+            // 다시 잡았거나 픽업트럭 짐칸 등에 붙었으면(부모가 생김) 건드리지 않음
+            if (IsSelected(it.grab) || it.t.parent != null) { it.releaseFrames = 0; continue; }
+            it.rb.isKinematic = false;
+            it.rb.useGravity = true;
         }
     }
 
@@ -171,12 +195,14 @@ public class BoxConveyor : MonoBehaviour
 
     static Component AddGrab(GameObject go)
     {
-        FindXR();
-        if (grabType == null) return null;
-        var c = go.AddComponent(grabType);
-        var p = grabType.GetProperty("throwOnDetach");
-        if (p != null && p.CanWrite) p.SetValue(c, false);
-        return c;
+        var g = go.AddComponent<XRGrabInteractable>();
+        // 손 움직임을 물리 속도로 따라가서 부드럽게 움직이고, 테이블/벽에도 자연스럽게 부딪힘
+        g.movementType = XRBaseInteractable.MovementType.VelocityTracking;
+        // 손이 닿은 자리 그대로 잡음 (상자 중심으로 툭 튀지 않음)
+        g.useDynamicAttach = true;
+        // 놓을 때 손 속도를 이어받음
+        g.throwOnDetach = true;
+        return g;
     }
 
     Transform BuildBox(Vector3 s, out Component grab)
@@ -185,6 +211,8 @@ public class BoxConveyor : MonoBehaviour
         var root = new GameObject("CardboardBox").transform;
         var rb = root.gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true; rb.useGravity = false; rb.mass = 1.2f;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;                  // 화면에서 떨림 없이
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative; // 빠르게 휘둘러도 안 뚫림
 
         // 열린 상자: 바닥 + 벽 4개 (안에 물건을 넣을 수 있게 콜라이더도 벽마다)
         var inside = new Color(0.62f, 0.45f, 0.27f);

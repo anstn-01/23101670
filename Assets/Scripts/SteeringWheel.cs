@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 // 운전대(Pick Up_9 Stearing)에 붙는 스크립트. VR 손으로 운전대를 잡고 돌리면 운전대가 축을 중심으로 회전합니다.
 // 한 바퀴(360도) 이상 계속 돌릴 수 있고, maxAngle 까지 양쪽으로 돌아갑니다.
-// ★ 가운데가 아니라 바깥 테두리(림)만 잡을 수 있어요: 림을 따라 작은 콜라이더(RimGrab)를 둘러서 그것만 잡기 판정에 씀.
+// ★ 가운데가 아니라 바깥 테두리(림)만 잡을 수 있어요: 림 바깥쪽을 따라 작은 콜라이더(RimGrab)를 둘러서 그것만 잡기 판정에 씀.
 // 회전축은 운전대 메쉬에서 가장 얇은 방향(원판의 두께 방향)으로 자동 계산합니다.
 public class SteeringWheel : MonoBehaviour
 {
@@ -17,13 +17,15 @@ public class SteeringWheel : MonoBehaviour
     public Vector3 axisOverride = Vector3.zero;
 
     [Header("림(테두리) 잡기")]
-    [Tooltip("림 반지름 (운전대 로컬 단위, 0 이면 메쉬 크기에서 자동)")]
+    [Tooltip("림 반지름 (운전대 로컬 단위, 0 이면 메쉬 바깥 테두리에서 자동)")]
     public float rimRadius = 0f;
-    [Tooltip("림 반지름 자동 계산 비율 (메쉬 반지름 대비)")]
-    public float rimRatio = 0.9f;
+    [Tooltip("림 반지름 자동 계산 비율 (메쉬 바깥 테두리 대비, 1 = 바깥 테두리)")]
+    public float rimRatio = 1f;
+    [Tooltip("잡기 판정을 바깥쪽으로 더 밀어내는 거리 (월드 m)")]
+    public float rimOutward = 0.01f;
     [Tooltip("림 잡기 판정 두께 (월드 m)")]
     public float rimThickness = 0.06f;
-    public int rimSegments = 20;
+    public int rimSegments = 24;
 
     [Tooltip("현재 운전대 각도. 운전자 시점에서 시계방향(오른쪽으로 돌림)이 +")]
     public float angle;
@@ -35,7 +37,7 @@ public class SteeringWheel : MonoBehaviour
     Vector3 pivotLocal;      // 부모 기준 회전 중심
     Vector3 axisLocal;       // 부모 기준 회전축
     Vector3 meshAxis;        // 메쉬 로컬 기준 회전축
-    Vector3 meshCenter;      // 메쉬 로컬 기준 중심
+    Vector3 meshCenter;      // 메쉬 로컬 기준 중심 (림이 있는 깊이)
     float meshRadius;        // 메쉬 로컬 기준 림 반지름
     float rightSign = 1f;    // AngleAxis(+) 가 운전자 기준 시계방향이면 +1
     Vector3 basePos;
@@ -84,7 +86,7 @@ public class SteeringWheel : MonoBehaviour
         }
         Vector3 axisW = transform.TransformDirection(aLocal).normalized;
 
-        // 림 반지름: 축에 수직인 두 방향 크기 중 큰 쪽의 절반
+        // 림 반지름: 축에 수직인 두 방향 크기 중 큰 쪽의 절반 (= 바깥 테두리)
         meshAxis = aLocal; meshCenter = b.center;
         float r = 0f;
         for (int i = 0; i < 3; i++)
@@ -94,6 +96,10 @@ public class SteeringWheel : MonoBehaviour
             r = Mathf.Max(r, b.size[i] * 0.5f);
         }
         meshRadius = rimRadius > 0f ? rimRadius : r * rimRatio;
+
+        // 메쉬를 읽을 수 있으면 실제 바깥 테두리 정점으로 반지름/깊이를 정확히 맞춤
+        if (rimRadius <= 0f && mf != null && mf.sharedMesh != null && mf.sharedMesh.isReadable)
+            FitRimFromVertices(mf.sharedMesh, b.center, aLocal);
 
         // 차의 앞 방향 / 오른쪽
         Vector3 carFwd = CarForward();
@@ -114,6 +120,32 @@ public class SteeringWheel : MonoBehaviour
         Debug.Log($"[SteeringWheel] axis(world)={axisW} pivot={pivotW} rimRadius={meshRadius} rightSign={rightSign}");
     }
 
+    // 회전축에서 가장 먼 정점들(바깥 테두리)의 반지름과 깊이를 사용
+    void FitRimFromVertices(Mesh m, Vector3 c, Vector3 axis)
+    {
+        var vs = m.vertices;
+        if (vs == null || vs.Length == 0) return;
+        float maxR = 0f;
+        foreach (var v in vs)
+        {
+            Vector3 d = v - c;
+            float ax = Vector3.Dot(d, axis);
+            maxR = Mathf.Max(maxR, (d - axis * ax).magnitude);
+        }
+        if (maxR <= 1e-5f) return;
+
+        float sumA = 0f; int n = 0;
+        foreach (var v in vs)
+        {
+            Vector3 d = v - c;
+            float ax = Vector3.Dot(d, axis);
+            if ((d - axis * ax).magnitude < maxR * 0.85f) continue;
+            sumA += ax; n++;
+        }
+        meshRadius = maxR * rimRatio;
+        if (n > 0) meshCenter = c + axis * (sumA / n);
+    }
+
     void SetupInteractable()
     {
         // 가운데(운전대 전체)에 있던 콜라이더는 잡기에서 빼기 → 림만 잡힘
@@ -121,7 +153,7 @@ public class SteeringWheel : MonoBehaviour
         var old = GetComponent<XRSimpleInteractable>();
         if (old != null) Destroy(old);
 
-        // 림을 따라 콜라이더 고리 만들기 (운전대 자식이라 같이 돎)
+        // 림 바깥쪽을 따라 콜라이더 고리 만들기 (운전대 자식이라 같이 돎)
         var rim = new GameObject("RimGrab");
         rim.transform.SetParent(transform, false);
         Vector3 u = Vector3.ProjectOnPlane(Vector3.up, meshAxis);
@@ -130,8 +162,9 @@ public class SteeringWheel : MonoBehaviour
         Vector3 v = Vector3.Cross(meshAxis, u).normalized;
         float ls = Mathf.Max(1e-4f, (Mathf.Abs(transform.lossyScale.x) + Mathf.Abs(transform.lossyScale.y) + Mathf.Abs(transform.lossyScale.z)) / 3f);
         float thick = rimThickness / ls;
+        float grabR = meshRadius + rimOutward / ls;   // 바깥 테두리보다 살짝 바깥
         int n = Mathf.Max(8, rimSegments);
-        float segLen = 2f * Mathf.PI * meshRadius / n * 1.1f;
+        float segLen = 2f * Mathf.PI * grabR / n * 1.1f;
         for (int i = 0; i < n; i++)
         {
             float th = i * Mathf.PI * 2f / n;
@@ -139,7 +172,7 @@ public class SteeringWheel : MonoBehaviour
             Vector3 tan = -u * Mathf.Sin(th) + v * Mathf.Cos(th);
             var s = new GameObject("Rim_" + i);
             s.transform.SetParent(rim.transform, false);
-            s.transform.localPosition = meshCenter + dir * meshRadius;
+            s.transform.localPosition = meshCenter + dir * grabR;
             s.transform.localRotation = Quaternion.LookRotation(tan, meshAxis);
             var bc = s.AddComponent<BoxCollider>();
             bc.size = new Vector3(thick, thick, segLen);

@@ -4,8 +4,8 @@
 // - 상자 안쪽 크기보다 크면 비율을 유지한 채 줄여서 넣음 (가장 잘 맞는 방향으로 눕히기도 함)
 // - 넣은 물건은 상자에 고정돼서 상자를 들고 흔들어도 밖으로 튀어나오지 않음
 // - 상자 안 물건을 다시 손으로 잡으면 원래 크기로 돌아와서 꺼낼 수 있음
-// - 날개 4장을 다 닫고, 기계(Machine)에서 뽑은 테이프 끝을 상자 윗면에 대면
-//   테이프가 앞면 → 윗면 이음새 → 뒷면으로 붙어서 상자가 봉인됨 (날개 잠김, 안 물건 못 꺼냄)
+// - 날개 4장을 다 닫고 손을 떼면 테이프가 자동으로
+//   앞면 → 윗면 이음새 → 뒷면으로 붙어서 상자가 봉인됨 (날개 잠김, 안 물건 못 꺼냄)
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +19,8 @@ public class BoxSlot : MonoBehaviour
     public float margin = 0.012f;        // 벽과 물건 사이 여유
     public float captureAbove = 0.16f;   // 입구 위 이 높이 안으로 들어오면 넣기
     public float minScale = 0.3f;
+    [Tooltip("날개 4장이 다 닫히고 손을 뗀 뒤 이 시간(초)이 지나면 테이프 자동 부착")]
+    public float autoSealDelay = 0.3f;
     public bool Sealed { get; private set; }
     internal bool IsLoadedOnPickup => cargoBed != null;
 
@@ -32,6 +34,7 @@ public class BoxSlot : MonoBehaviour
     Collider[] boxCols;
     bool scanner;
     bool tapeWrapComplete;
+    float closedSince = -1f;
     Rigidbody cargoBody;
     XRGrabInteractable cargoGrab;
     PickupCargoBed cargoBed;
@@ -124,7 +127,7 @@ public class BoxSlot : MonoBehaviour
         CheckRemoved();
         if (!Sealed && AnyOpen()) Capture();
         WatchOutside();
-        if (!Sealed && AllClosed()) CheckTape();
+        if (!Sealed) CheckAutoSeal();
     }
 
     void Scan()
@@ -236,28 +239,17 @@ public class BoxSlot : MonoBehaviour
     BoxFlap[] Flaps { get { if (flaps == null || flaps.Length == 0) flaps = GetComponentsInChildren<BoxFlap>(); return flaps; } }
     bool AnyOpen() { var f = Flaps; if (f.Length == 0) return true; foreach (var x in f) if (x.angle > 45f) return true; return false; }
     bool AllClosed() { var f = Flaps; if (f.Length == 0) return false; foreach (var x in f) if (x.angle > 3f) return false; return true; }
+    bool AnyHeld() { foreach (var x in Flaps) if (x != null && x.IsHeld) return true; return false; }
 
-    static TapeRibbon[] tapeCache = new TapeRibbon[0];
-    static float tapeScanAt = -1f;
-
-    void CheckTape()
+    // 날개 4장이 다 닫히고 손을 뗀 상태가 잠깐 유지되면 테이프 자동 부착
+    void CheckAutoSeal()
     {
-        if (Time.time - tapeScanAt > 0.15f || Time.time < tapeScanAt)
+        if (AllClosed() && !AnyHeld())
         {
-            tapeScanAt = Time.time;
-            tapeCache = FindObjectsByType<TapeRibbon>(FindObjectsSortMode.None);
+            if (closedSince < 0f) closedSince = Time.time;
+            else if (Time.time - closedSince >= autoSealDelay) Seal(null, 1f);
         }
-        Vector3 s = boxSize;
-        float topSurf = s.y * 0.5f + wall + 0.004f;
-        foreach (var r in tapeCache)
-        {
-            if (r == null || !(r.IsGrabbed || !r.IsAttached)) continue;
-            Vector3 lp = transform.InverseTransformPoint(r.TipPosition);
-            if (Mathf.Abs(lp.x) > s.x * 0.5f + 0.02f || Mathf.Abs(lp.z) > s.z * 0.5f + 0.02f) continue;
-            if (lp.y < topSurf - 0.03f || lp.y > topSurf + 0.06f) continue;
-            Seal(r, lp.z >= 0 ? 1f : -1f);
-            break;
-        }
+        else closedSince = -1f;
     }
 
     public void Seal(TapeRibbon r, float startSide)
@@ -267,7 +259,7 @@ public class BoxSlot : MonoBehaviour
         foreach (var f in Flaps) { f.locked = true; f.angle = 0f; }
         foreach (var c in contents) if (c.grab is Behaviour b) b.enabled = false;   // 봉인 후엔 못 꺼냄
 
-        // 테이프 재질: 기계 테이프와 같은 색, 조금 더 진하게
+        // 테이프 재질: 컨베이어에 지정된 테이프 재질(BOX_Tape) 사용
         Material mat = null; float w = 0.08f;
         if (r != null)
         {
@@ -279,7 +271,12 @@ public class BoxSlot : MonoBehaviour
                 var key = mat.HasProperty("_BaseColor") ? "_BaseColor" : "_Color";
                 if (mat.HasProperty(key)) { var c = mat.GetColor(key); c.a = Mathf.Max(c.a, 0.7f); mat.SetColor(key, c); }
             }
-            Destroy(r.gameObject);   // 손에 든 테이프는 상자에 붙으면서 소모
+            Destroy(r.gameObject);
+        }
+        if (mat == null)
+        {
+            var conv = FindFirstObjectByType<BoxConveyor>();
+            if (conv != null && conv.tapeMaterial != null) mat = conv.tapeMaterial;
         }
         if (mat == null)
         {
@@ -289,7 +286,7 @@ public class BoxSlot : MonoBehaviour
             if (mat.HasProperty("_Smoothness")) mat.SetFloat("_Smoothness", 0.85f);
         }
         StartCoroutine(WrapTape(mat, Mathf.Min(w, boxSize.x * 0.4f), startSide));
-        Debug.Log($"[BoxSlot] 테이프 봉인 완료 ({name})");
+        Debug.Log($"[BoxSlot] 테이프 자동 봉인 ({name})");
     }
 
     IEnumerator WrapTape(Material mat, float w, float side)

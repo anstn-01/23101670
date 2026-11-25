@@ -1,4 +1,6 @@
 // 초록 버튼: 1번 누르면 테이프가 조금 나옴 → 잡고 당기면 계속 풀림 → 다시 누르면 끊김
+// ※ 현재 비활성화: 상자 날개를 다 닫으면 테이프가 자동으로 붙도록 바뀌어서 손 테이프는 사용하지 않음.
+//   다시 쓰려면 Machine 오브젝트의 TapeDispenser 에서 Dispenser Enabled 를 체크하세요.
 // - 에디터 Play: Game 뷰에서 버튼 클릭 / 테이프 끝을 마우스로 끌기
 // - VR: 버튼 선택(XR Simple Interactable) / 테이프 끝 잡기(XR Grab)
 using System.Collections.Generic;
@@ -9,6 +11,9 @@ using UnityEngine.InputSystem;
 
 public class TapeDispenser : MonoBehaviour
 {
+    [Tooltip("손으로 뽑는 테이프 사용 여부 (꺼져 있으면 버튼을 눌러도 테이프가 안 나옴)")]
+    public bool dispenserEnabled = false;
+
     [Header("References")]
     public Transform button;        // Button_Green
     public Transform spawnPoint;    // Head_Slot
@@ -42,6 +47,7 @@ public class TapeDispenser : MonoBehaviour
     /// 버튼 누르기: 테이프가 없으면 새로 나오고, 붙어 있으면 끊음
     public void Press()
     {
+        if (!dispenserEnabled) return;
         if (Time.time - lastPress < cooldown || spawnPoint == null) return;
         lastPress = Time.time;
         if (button)
@@ -82,6 +88,7 @@ public class TapeDispenser : MonoBehaviour
 
     void Update()
     {
+        if (!dispenserEnabled) return;
         var cam = Camera.main;
         if (cam == null) return;
 
