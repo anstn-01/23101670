@@ -1,0 +1,5 @@
+door=Pick Up_9 L Door car=픽업차량 carScale=(1.00, 1.00, 1.00) doorScale=(1.00, 1.00, 1.00)
+forward=(1.00, 0.00, 0.00) outward=(0.00, 0.00, 1.00) side=-1
+door f[-65.954,-64.866] o[20.390,20.814] u[1.310,2.688]
+hingeW=(-64.87, 2.00, 20.78) handleW=(-65.82, 2.07, 20.82) thick=0.100 openSign=1
+hingeLocal=(-1.27, 1.21, 0.94) axisLocal=(0.00, 1.00, 0.00) closedDirLocal=(-0.04, 0.00, -1.00)

@@ -1,0 +1,144 @@
+MeshRenderers: 1755, with collider: 1, without: 1754
+  noCol 381 x demo_city_by_versatile_studio / hedge_with_base
+  noCol 377 x demo_city_by_versatile_studio / bench
+  noCol 140 x demo_city_by_versatile_studio / lamp_pole_single_blue
+  noCol 128 x demo_city_by_versatile_studio / lamp_pole_small
+  noCol 84 x demo_city_by_versatile_studio / tree_3
+  noCol 76 x demo_city_by_versatile_studio / tree_2
+  noCol 66 x demo_city_by_versatile_studio / tree_1
+  noCol 42 x demo_city_by_versatile_studio / lamp_pole_single_white
+  noCol 36 x demo_city_by_versatile_studio / building_lamp_white
+  noCol 34 x demo_city_by_versatile_studio / building_lamp_orange
+  noCol 30 x demo_city_by_versatile_studio / building_lamp_pink
+  noCol 24 x demo_city_by_versatile_studio / concrete_block
+  noCol 24 x demo_city_by_versatile_studio / building_lamp_blue
+  noCol 21 x demo_city_by_versatile_studio / lamp_pole_single_orange
+  noCol 20 x demo_city_by_versatile_studio / lamp_pole_single_pink
+  noCol 15 x demo_city_by_versatile_studio / mid_house_3
+  noCol 13 x demo_city_by_versatile_studio / lamp_pole_dual_orange
+  noCol 10 x demo_city_by_versatile_studio / basement_big
+  noCol 9 x demo_city_by_versatile_studio / small_house_3
+  noCol 9 x demo_city_by_versatile_studio / mid_house_5
+  noCol 9 x demo_city_by_versatile_studio / mid_house_2
+  noCol 8 x demo_city_by_versatile_studio / mid_house_1_2
+  noCol 8 x demo_city_by_versatile_studio / basement_small
+  noCol 8 x demo_city_by_versatile_studio / mid_house_4_2
+  noCol 7 x demo_city_by_versatile_studio / small_house_2
+  noCol 7 x demo_city_by_versatile_studio / office_building_2
+  noCol 7 x demo_city_by_versatile_studio / small_house_1
+  noCol 6 x demo_city_by_versatile_studio / office_building_1
+  noCol 6 x demo_city_by_versatile_studio / office_building_3
+  noCol 5 x demo_city_by_versatile_studio / highway_support
+  noCol 5 x demo_city_by_versatile_studio / office_building_4
+  noCol 4 x demo_city_by_versatile_studio / lamp_pole_dual_blue
+  noCol 4 x demo_city_by_versatile_studio / basement_mid
+  noCol 4 x demo_city_by_versatile_studio / mid_house_4
+  noCol 4 x demo_city_by_versatile_studio / mid_house_1
+  noCol 3 x demo_city_by_versatile_studio / factory_building_small_bgr
+  noCol 2 x Camera Offset / Button_B
+  noCol 2 x Camera Offset / TouchPad
+  noCol 2 x Camera Offset / Trigger
+  noCol 2 x Camera Offset / ThumbStick
+  noCol 2 x Camera Offset / ThumbStick_Base
+  noCol 2 x demo_city_by_versatile_studio / factory_building_big_bgr
+  noCol 2 x Camera Offset / Bumper
+  noCol 2 x Camera Offset / Controller_Base
+  noCol 2 x Camera Offset / Button_Home
+  noCol 2 x Camera Offset / Button_A
+  noCol 1 x demo_city_by_versatile_studio / fence_part61
+  noCol 1 x demo_city_by_versatile_studio / city_part_highway1
+  noCol 1 x demo_city_by_versatile_studio / fence_part42
+  noCol 1 x demo_city_by_versatile_studio / fence_part36
+  noCol 1 x demo_city_by_versatile_studio / fence_part57
+  noCol 1 x demo_city_by_versatile_studio / fence_part33
+  noCol 1 x demo_city_by_versatile_studio / fence_part29
+  noCol 1 x Pick Up_9 Stearing / Pick
+  noCol 1 x demo_city_by_versatile_studio / fence_part76
+  noCol 1 x demo_city_by_versatile_studio / fence_part6
+  noCol 1 x demo_city_by_versatile_studio / fence_part2
+  noCol 1 x demo_city_by_versatile_studio / fence_part23
+  noCol 1 x Pick Up_9 BL Tire / Pick
+  noCol 1 x demo_city_by_versatile_studio / fence_part48
+--- Colliders by type
+  BoxCollider: 1
+  CharacterController: 1
+  MeshCollider: 1
+--- Mesh colliders sample
+  STATIC_MODELS/demo_city_by_versatile_studio/city_part_collider mesh=city_part_collider b=(770.11, 31.47, 699.65) (3204.14, 61.55, 2048.52)
+--- Box colliders
+  픽업차량 enabled=True trig=False b=(-65.98, 1.97, 19.51) (6.07, 1.65, 2.47)
+--- CharacterControllers
+  XR Origin (XR Rig) h=1.36144 r=0.1 step=0.5 slope=45 center=(0.00, 0.76, 0.00) pos=(-58.16, 1.64, 15.14)
+--- MonoBehaviours under XR Origin
+  XR Origin (XR Rig) : Unity.XR.CoreUtils.XROrigin enabled=True active=True
+  XR Origin (XR Rig) : UnityEngine.XR.Interaction.Toolkit.Inputs.InputActionManager enabled=True active=True
+  XR Origin (XR Rig) : UnityEngine.XR.Interaction.Toolkit.Inputs.XRInputModalityManager enabled=True active=True
+  XR Origin (XR Rig) : UnityEngine.XR.Interaction.Toolkit.Gaze.XRGazeAssistance enabled=False active=True
+  XR Origin (XR Rig)/Camera Offset/Main Camera : UnityEngine.InputSystem.XR.TrackedPoseDriver enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Gaze Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.XRGazeInteractor enabled=True active=False
+  XR Origin (XR Rig)/Camera Offset/Gaze Interactor : UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets.GazeInputManager enabled=True active=False
+  XR Origin (XR Rig)/Camera Offset/Gaze Interactor : UnityEngine.InputSystem.XR.TrackedPoseDriver enabled=True active=False
+  XR Origin (XR Rig)/Camera Offset/Gaze Stabilized : UnityEngine.XR.Interaction.Toolkit.Inputs.XRTransformStabilizer enabled=True active=False
+  XR Origin (XR Rig)/Camera Offset/Left Controller : UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets.ControllerInputActionManager enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller : UnityEngine.XR.Interaction.Toolkit.Interactors.XRInteractionGroup enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller : UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics.HapticImpulsePlayer enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller : UnityEngine.InputSystem.XR.TrackedPoseDriver enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Poke Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.XRPokeInteractor enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Poke Interactor : UnityEngine.XR.Interaction.Toolkit.Feedback.SimpleHapticFeedback enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Poke Interactor/Poke Point Affordances/Poke : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.State.XRInteractorAffordanceStateProvider enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Poke Interactor/Poke Point Affordances/Poke : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Rendering.MaterialPropertyBlockHelper enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Poke Interactor/Poke Point Affordances/Poke : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Receiver.Rendering.ColorMaterialPropertyAffordanceReceiver enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Poke Interactor/Poke Point Affordances/NearFar : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.State.XRInteractorAffordanceStateProvider enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Poke Interactor/Poke Point Affordances/NearFar : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Rendering.MaterialPropertyBlockHelper enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Poke Interactor/Poke Point Affordances/NearFar : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Receiver.Rendering.ColorMaterialPropertyAffordanceReceiver enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Attachment.InteractionAttachController enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.Casters.SphereInteractionCaster enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.Casters.CurveInteractionCaster enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Feedback.SimpleHapticFeedback enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Near-Far Interactor/LineVisual : UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.CurveVisualController enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Teleport Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Teleport Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.XRInteractorLineVisual enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Teleport Interactor : UnityEngine.XR.Interaction.Toolkit.Feedback.SimpleHapticFeedback enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller/Left Controller Visual : UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets.ControllerAnimator enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Left Controller Teleport Stabilized Origin : UnityEngine.XR.Interaction.Toolkit.Inputs.XRTransformStabilizer enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller : UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets.ControllerInputActionManager enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller : UnityEngine.XR.Interaction.Toolkit.Interactors.XRInteractionGroup enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller : UnityEngine.XR.Interaction.Toolkit.Inputs.Haptics.HapticImpulsePlayer enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller : UnityEngine.InputSystem.XR.TrackedPoseDriver enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Poke Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.XRPokeInteractor enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Poke Interactor : UnityEngine.XR.Interaction.Toolkit.Feedback.SimpleHapticFeedback enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Poke Interactor/Poke Point Affordances/Poke : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.State.XRInteractorAffordanceStateProvider enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Poke Interactor/Poke Point Affordances/Poke : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Rendering.MaterialPropertyBlockHelper enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Poke Interactor/Poke Point Affordances/Poke : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Receiver.Rendering.ColorMaterialPropertyAffordanceReceiver enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Poke Interactor/Poke Point Affordances/NearFar : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.State.XRInteractorAffordanceStateProvider enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Poke Interactor/Poke Point Affordances/NearFar : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Rendering.MaterialPropertyBlockHelper enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Poke Interactor/Poke Point Affordances/NearFar : UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Receiver.Rendering.ColorMaterialPropertyAffordanceReceiver enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Attachment.InteractionAttachController enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.Casters.SphereInteractionCaster enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.Casters.CurveInteractionCaster enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Near-Far Interactor : UnityEngine.XR.Interaction.Toolkit.Feedback.SimpleHapticFeedback enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Near-Far Interactor/LineVisual : UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.CurveVisualController enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Teleport Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Teleport Interactor : UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.XRInteractorLineVisual enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Teleport Interactor : UnityEngine.XR.Interaction.Toolkit.Feedback.SimpleHapticFeedback enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller/Right Controller Visual : UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets.ControllerAnimator enabled=True active=True
+  XR Origin (XR Rig)/Camera Offset/Right Controller Teleport Stabilized Origin : UnityEngine.XR.Interaction.Toolkit.Inputs.XRTransformStabilizer enabled=True active=True
+  XR Origin (XR Rig)/Locomotion : UnityEngine.XR.Interaction.Toolkit.Locomotion.LocomotionMediator enabled=True active=True
+  XR Origin (XR Rig)/Locomotion : UnityEngine.XR.Interaction.Toolkit.Locomotion.XRBodyTransformer enabled=True active=True
+  XR Origin (XR Rig)/Locomotion/Turn : UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning.SnapTurnProvider enabled=True active=True
+  XR Origin (XR Rig)/Locomotion/Turn : UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning.ContinuousTurnProvider enabled=True active=True
+  XR Origin (XR Rig)/Locomotion/Move : UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets.DynamicMoveProvider enabled=True active=True
+  XR Origin (XR Rig)/Locomotion/Grab Move : UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement.GrabMoveProvider enabled=True active=False
+  XR Origin (XR Rig)/Locomotion/Grab Move : UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement.GrabMoveProvider enabled=True active=False
+  XR Origin (XR Rig)/Locomotion/Grab Move : UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement.TwoHandedGrabMoveProvider enabled=True active=False
+  XR Origin (XR Rig)/Locomotion/Teleportation : UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.TeleportationProvider enabled=True active=True
+  XR Origin (XR Rig)/Locomotion/Climb : UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing.ClimbProvider enabled=True active=True
+  XR Origin (XR Rig)/Locomotion/Climb/Climb Teleport : UnityEngine.XR.Interaction.Toolkit.Locomotion.Climbing.ClimbTeleportInteractor enabled=True active=True
+  XR Origin (XR Rig)/Locomotion/Climb/Climb Teleport : UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets.ClimbTeleportDestinationIndicator enabled=True active=True
+  XR Origin (XR Rig)/Locomotion/Gravity : UnityEngine.XR.Interaction.Toolkit.Locomotion.Gravity.GravityProvider enabled=True active=True
+  XR Origin (XR Rig)/Locomotion/Jump : UnityEngine.XR.Interaction.Toolkit.Locomotion.Jump.JumpProvider enabled=True active=True
+--- Pick Up_9
+Cube: none
+Physics gravity (0.00, -9.81, 0.00)
